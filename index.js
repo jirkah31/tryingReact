@@ -41,7 +41,7 @@ class SecondApp extends React.Component {
 				},
 				{
 					id: 2,
-					who: 'Capitan America wdawf',
+					who: 'Capitan America Winter Soldier',
 					what: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Perferendis, quam?',
 					cool: 20
 				}
@@ -58,34 +58,38 @@ class SecondApp extends React.Component {
 	handleSubmit = event => { //šipková fce si nevytváří vlastní kontext pro THIS jako normální fce() a odkazuje kontext na this pro SecondApp
 		event.preventDefault();
 
-		const newHero = {
-			id: 99,
-			who: this.state.dude,
-			what: this.state.dude,
-			cool: 20
-		}
+		this.setState((state) => {
+
+			const newHero = {
+				id: Math.max(...state.characters.map(d => d.id)) + 1,
+				who: this.state.dude,
+				what: this.state.dude,
+				cool: 20
+			}
+			return {
+				characters: [...this.state.characters, newHero]
+			}
+		})
 	}
 
 	listOfLiElements = () => {
 		return (
 			this.state.characters.map(hero => ( //pro práci s poli používat fce, map, filter, concat, protože vytvářejí kopii původního pole a původní nepřepisují
-				<li className={hero.who.split(' ').length < 3 ? "strong" : ""}
-					key={hero.id}>
+				<li className={hero.who.split(' ').length < 3 ? "strong" : ""} key={hero.id}>
+					<a className="clear">x</a>
 
-					{hero.who}
+					<article>
+						{hero.who}
 
-					{hero.who.split(' ').length < 3} {/* zápis jako u if */}
-					{
-						console.log('fungujeme?')
-					}
-
-					{hero.who.split(' ').length < 3 && ( //zápis přes &&, kde se druhá část vyplní pokud platí první část
-						<small>
-							<strong>
-								-lol short name
-							</strong>
-						</small>)
-					}
+						{hero.who.split(' ').length < 3 && ( //zápis přes &&, kde se druhá část vyplní pokud platí první část
+							<small>
+								<strong>
+									-lol short name
+								</strong>
+							</small>)
+						}
+					</article>
+						<input className="coolest" type="number" value="12" />
 				</li>
 			))
 		)
@@ -97,7 +101,7 @@ class SecondApp extends React.Component {
 	 */
 	render() {
 
-		//PŘEDCHOZÍ VERZE NEŽ SE Z TOHO UDĚLAL FUNKCE NAHOŘE
+		//PŘEDCHOZÍ VERZE NEŽ SE Z TOHO UDĚLAL FUNKCE listOfElements
 		// const heros = this.state.characters.map( hero => ( //pro práci s poli používat fce, map, filter, concat, protože vytvářejí kopii původního pole a původní nepřepisují
 		// 	<li className={hero.who.split(' ').length < 3 ? "strong" : ""}
 		// 		key={hero.id}>
@@ -126,7 +130,7 @@ class SecondApp extends React.Component {
 				</ul>
 
 				<form className="add-new" onSubmit={this.handleSubmit}>
-					<input type="text" onChange={this.handleChange} />
+					<input className="newText" type="text" onChange={this.handleChange} />
 				</form>
 
 				<p className="preview">{this.state.dude}</p>

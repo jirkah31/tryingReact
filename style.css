@@ -15,10 +15,8 @@ body {
 	align-items: center;
 	justify-content: center;
 	width: 100vw;
-	text-shadow: 3px 3px black;
-	
+	text-shadow: 2px 2px 2px rgb(0, 0, 0);
 	margin-top: 50px;
-	
 }
 
 div {
@@ -32,12 +30,13 @@ div {
 
 strong,
 .strong {
-	color: rgb(228, 161, 52);
-	font-weight: 200;
+	color: rgba(32, 32, 32, 0.517);
+	font-weight: bold;
 	font-style: italic;
+	background-color: rgba(240, 248, 255, 0);
 }
 
-input {
+.newText {
 	width: 500px;
 	padding-bottom: 3px;
 	border: none;
@@ -47,7 +46,7 @@ input {
 	text-align: center;
 }
 
-input:focus {
+.newText:focus {
 	outline: none;
 }
 
@@ -60,4 +59,44 @@ p {
 ul {
 	text-align: center;
 	list-style-type: none;
+}
+
+li {
+	position: relative;
+}
+
+article {
+	width: 100%;
+	border-radius: 15px;
+	padding: 25px 70px;
+	margin-bottom: 20px;
+	background-color: rgb(224, 158, 72);
+	box-shadow: 3px 3px 3px black;
+}
+
+small {
+	margin-left: 5px;
+	background-color: rgba(240, 248, 255, 0);
+}
+
+.clear {
+	position: absolute;
+	left: -30px;
+	top: 25px;
+	cursor: pointer;
+}
+
+.coolest {
+	position: absolute;
+	top: 20px;
+	right: -230px;
+	width: 40px;
+	cursor: default;
+	text-align: center;
+	border: none;
+}
+
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+	opacity: 1;
 }
