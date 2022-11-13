@@ -31,7 +31,9 @@ class SecondApp extends React.Component {
 		super(props)
 
 		this.state = {
-			dude: 'Marceline the  King',
+			newWho: 'Marceline the  King',
+			newWhat: 'super hero',
+
 			characters: [
 				{
 					id: 1,
@@ -49,27 +51,43 @@ class SecondApp extends React.Component {
 		}
 	}
 
-	handleChange = event => { //šipková fce si nevytváří vlastní kontext pro THIS jako normální fce() a odkazuje kontext na this pro SecondApp
+	handleWho = event => { //šipková fce si nevytváří vlastní kontext pro THIS jako normální fce() a odkazuje kontext na this pro SecondApp
 		this.setState({
-			dude: event.target.value
+			newWho: event.target.value
 		})
 	}
 
-	handleSubmit = event => { //šipková fce si nevytváří vlastní kontext pro THIS jako normální fce() a odkazuje kontext na this pro SecondApp
-		event.preventDefault();
-
-		this.setState((state) => {
-
-			const newHero = {
-				id: Math.max(...state.characters.map(d => d.id)) + 1,
-				who: this.state.dude,
-				what: this.state.dude,
-				cool: 20
-			}
-			return {
-				characters: [...this.state.characters, newHero]
-			}
+	handleWhat = event => { 
+		this.setState({
+			newWhat: event.target.value
 		})
+	}
+
+	handleCool = hero => event => { 
+
+		const cool = +event.target.value
+		
+		this.setState((state) => { 
+			return { 
+				characters: state.characters.map(item => item === hero ?{...hero, cool} : item) 
+			}})
+	}
+
+	handleSubmit = event => { //šipková fce si nevytváří vlastní kontext pro THIS jako normální fce() a odkazuje kontext na this pro SecondApp
+		if (event.key === 'Enter') {
+			this.setState((state) => {
+
+				const newHero = {
+					id: Math.max(...state.characters.map(d => d.id)) + 1,
+					who: this.state.newWho,
+					what: this.state.newWhat,
+					cool: 20
+				}
+				return {
+					characters: [...this.state.characters, newHero]
+				}
+			})
+		}
 	}
 
 	listOfLiElements = () => {
@@ -88,20 +106,48 @@ class SecondApp extends React.Component {
 								</strong>
 							</small>)
 						}
+						<br />
+						{hero.what}
 					</article>
-						<input className="coolest" type="number" value="12" />
+					<input className="coolest" type="number" value={hero.cool} onChange={this.handleCool(hero)} />
 				</li>
 			))
 		)
 	}
 
-
 	/*
 		TEMPLATE
 	 */
 	render() {
+		return (
+			<div>
+				<ul>
+					{this.listOfLiElements()}
+				</ul>
 
-		//PŘEDCHOZÍ VERZE NEŽ SE Z TOHO UDĚLAL FUNKCE listOfElements
+				<form className="add-new" onKeyPress={this.handleSubmit}>
+					<input className="newText"
+						type="text"
+						value={this.state.newWho}
+					/>
+					<input className="newText"
+						type="text"
+						value={this.state.newWhat}
+					/>
+				</form>
+
+				<p className="preview">{this.state.newWho}</p>
+				<br />
+				<small>{this.state.newWhat}</small>
+			</div>
+		)
+	}
+}
+
+ReactDOM.render(<SecondApp />, document.getElementById('second'))
+
+
+	//PŘEDCHOZÍ VERZE NEŽ SE Z TOHO UDĚLAL FUNKCE listOfElements
 		// const heros = this.state.characters.map( hero => ( //pro práci s poli používat fce, map, filter, concat, protože vytvářejí kopii původního pole a původní nepřepisují
 		// 	<li className={hero.who.split(' ').length < 3 ? "strong" : ""}
 		// 		key={hero.id}>
@@ -122,21 +168,3 @@ class SecondApp extends React.Component {
 		// 	}
 		// 	</li>
 		// ))
-
-		return (
-			<div>
-				<ul>
-					{this.listOfLiElements()}
-				</ul>
-
-				<form className="add-new" onSubmit={this.handleSubmit}>
-					<input className="newText" type="text" onChange={this.handleChange} />
-				</form>
-
-				<p className="preview">{this.state.dude}</p>
-			</div>
-		)
-	}
-}
-
-ReactDOM.render(<SecondApp />, document.getElementById('second'))
