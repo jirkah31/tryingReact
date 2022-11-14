@@ -87,14 +87,30 @@ class SecondApp extends React.Component {
 					characters: [...this.state.characters, newHero]
 				}
 			})
+			this.resetForm()
 		}
+	}
+
+	removeHero = hero => {
+		this.setState((state) => { 
+			return {
+				characters: state.characters.filter(item => item !== hero) 
+			}
+		})
+	}
+
+	resetForm = () => {
+		this.setState({
+			newWho:  '',
+			newWhat: ''
+		})
 	}
 
 	listOfLiElements = () => {
 		return (
 			this.state.characters.map(hero => ( //pro práci s poli používat fce, map, filter, concat, protože vytvářejí kopii původního pole a původní nepřepisují
 				<li className={hero.who.split(' ').length < 3 ? "strong" : ""} key={hero.id}>
-					<a className="clear">x</a>
+					<a className="clear" onClick={() => this.removeHero(hero)}>x</a>
 
 					<article>
 						{hero.who}
@@ -129,10 +145,12 @@ class SecondApp extends React.Component {
 					<input className="newText"
 						type="text"
 						value={this.state.newWho}
+						onChange={this.handleWho}
 					/>
 					<input className="newText"
 						type="text"
 						value={this.state.newWhat}
+						onChange={this.handleWho}
 					/>
 				</form>
 
